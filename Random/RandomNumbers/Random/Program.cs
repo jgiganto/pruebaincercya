@@ -24,8 +24,7 @@ namespace RandomMain
 
             PrintFile(Numbers);
         }
-
-         
+                 
 
         static void PrintFile(IEnumerable<int> numbers)
         {
