@@ -13,7 +13,7 @@ WHERE EM.EmployeeID = 1
 
 SELECT 
 SUM((OD.UnitPrice * OD.Quantity) - OD.Discount) AS TOTAL_STEVEN_BILLED_BY_YEAR,
-YEAR(ORD.OrderDate) AS YEAR_
+YEAR(ORD.OrderDate) AS 'YEAR'
 FROM Orders ORD 
 LEFT JOIN [Order Details] OD
 ON ORD.OrderID = OD.OrderID
@@ -33,9 +33,7 @@ WITH subempleados(EmployeeID,FirstName,LastName,ReportsTo) AS
 	 ReportsTo
  FROM  Employees
  WHERE ReportsTo IS not NULL
-
  UNION ALL 
-
  SELECT
 	 EMP.EmployeeID,
 	 EMP.FirstName,
@@ -45,6 +43,5 @@ WITH subempleados(EmployeeID,FirstName,LastName,ReportsTo) AS
  INNER JOIN subempleados as s
   ON EMP.ReportsTo = s.EmployeeID
 )
-
 SELECT distinct EmployeeID,FirstName,LastName,ReportsTo FROM subempleados;
 

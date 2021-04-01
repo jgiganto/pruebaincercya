@@ -11,29 +11,32 @@ using System.Xml.Serialization;
 
 namespace Catalog
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
+            string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\..\..\"));           
+
             var products = GetProducts();
             var categoryAndProducts = GetCategories(products);
             var json = JsonConvert.SerializeObject(categoryAndProducts, Formatting.Indented);
 
             XmlSerializer inst = new XmlSerializer(typeof(List<CategoriesModel>));
-            TextWriter writer = new StreamWriter(@"C:\Users\je\Desktop\pruebaInercya\pruebaincercya\Catalog\productos.xml");
+            TextWriter writer = new StreamWriter(path + "Catalog.xml");
+            
             inst.Serialize(writer, categoryAndProducts);
             writer.Close();
 
-            File.WriteAllText(@"C:\Users\je\Desktop\pruebaInercya\pruebaincercya\Catalog\productos.json", json, Encoding.UTF8);
+            File.WriteAllText(path + "Catalog.json", json, Encoding.UTF8);
         }
     
         private static List<ProductsModel> GetProducts()
         {
-            string path = @"C:\Users\je\Desktop\pruebaInercya\pruebaincercya\Catalog\Products.csv";
+            string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\..\..\"));
             try
             {
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";", Encoding = Encoding.GetEncoding("ISO-8859-1") };
-                using (var reader = new StreamReader(path, Encoding.GetEncoding("ISO-8859-1")))
+                using (var reader = new StreamReader(path + "Products.csv", Encoding.GetEncoding("ISO-8859-1")))
                 using (var csv = new CsvReader(reader, config))
                 {
                                          
@@ -63,13 +66,13 @@ namespace Catalog
 
         private static List<CategoriesModel> GetCategories(List<ProductsModel> products)
         {
-            string path = @"C:\Users\je\Desktop\pruebaInercya\pruebaincercya\Catalog\Categories.csv";
+            string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\..\..\"));
 
             try
             {
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";", Encoding = Encoding.GetEncoding("ISO-8859-1") };
 
-                using (var reader = new StreamReader(path, Encoding.GetEncoding("ISO-8859-1")))
+                using (var reader = new StreamReader(path + "Categories.csv", Encoding.GetEncoding("ISO-8859-1")))
                 using (var csv = new CsvReader(reader, config))
                 {
                     var records = csv.GetRecords<CategoriesModel>();
@@ -87,7 +90,6 @@ namespace Catalog
                     }
                     return categorias;
                 }
-
             }
             catch (Exception)
             {
@@ -95,9 +97,5 @@ namespace Catalog
                 throw;
             }
         }
-
-        
-    }
-        
- 
+    }       
 }
